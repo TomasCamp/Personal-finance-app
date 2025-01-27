@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="d-flex align-items-center">
+    <a class="btn btn-secondary me-2" href="{% url 'index' %}">Volver</a>
+    <h1>¿Desea eliminar el siguiente movimiento?</h1>
+</div>
+
+{% if movement.type_movement %}
+    <section class="border border-3 p-3 mb-2 border-success">
+{% else %}
+    <section class="border border-3 p-3 mb-2 border-danger">
+{% endif %}
+    <p class="fs-4 text-center">Nombre: {{movement.name}}</p>
+    <p class="fs-4 text-center">Fecha: {{movement.date|date:"d/m/Y"}}</p>
+    <p class="fs-4 text-center">Monto: ${{movement.amount}}</p>
+    {% if movement.type_movement %}
+        <p class="fs-4 text-center">Tipo: Ingreso</p>
+    {% else %}
+        <p class="fs-4 text-center">Tipo: Egreso</p>
+    {% endif %}
+</section>
+
+<form method="post" class="w-25 d-flex flex-column" url="/id={{movement.id}}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+</form>
+<a href="{% url 'index' %}" class="w-25 btn btn-secondary mt-2">Volver</a>
+
+{% endblock content %}

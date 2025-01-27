@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="d-flex align-items-center">
+    <a class="btn btn-secondary me-2" href="{% url 'index' %}">Volver</a>
+    <h1>Crear movimiento</h1>
+</div>
+
+<div>
+    <ul>
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <li class="alert alert-danger">{{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+</div>
+
+<form method="post" action="" class="w-50 d-flex flex-column">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.date.label_tag }}
+        {{ form.date }}
+    </div>
+    
+    <div class="mb-3">
+        {{ form.type_movement.label_tag }}
+        {{ form.type_movement }}
+    </div>
+
+    <div class="mb-3">
+        {{ form.amount.label_tag }}
+        {{ form.amount }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>
+
+{% endblock content %}

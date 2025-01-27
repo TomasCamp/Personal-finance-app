@@ -1,0 +1,71 @@
+.content {
+    width: 85vw;
+    min-height: 100vh;
+    background-color: #eaeaea;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+}
+body {
+    background-color: #aaa;
+    margin: 0;
+    padding: 0;
+
+}
+
+.view {
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.input, .output {
+    width: 40%;
+    height: min-content;
+}
+.cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.cell div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input .cell {
+    background-color: #f7f7f7;
+}
+.output .cell {
+    border: 2px solid #b32;
+    color: #b32;
+    background-color: #f7f7f7;
+}
+
+.input h3{
+    margin: 0;
+    border-radius: 10px 10px 0 0;
+    padding: 5px;
+    text-align: center;
+    color: #eaeaea;
+    font-size: 25px;
+}
+.output h3{
+    margin: 0;
+    border-radius: 10px 10px 0 0;
+    padding: 5px;
+    text-align: center;
+    color: #eaeaea;
+    font-size: 25px;
+}
+
+.input .cell:last-of-type {
+    border-radius: 0 0 10px 10px;
+}
+.output .cell:last-of-type {
+    border-radius: 0 0 10px 10px;
+}
