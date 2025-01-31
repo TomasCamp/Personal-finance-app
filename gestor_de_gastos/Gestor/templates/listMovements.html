@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="d-flex align-items-center">
+    <a class="btn btn-secondary me-2" href="{% url 'index' %}">Volver</a>
+    <h1>Movimientos</h1>
+</div>
+<ul class="list-group border-3 mt-2">
+    {% for movement in movements %}
+        {% if movement.type_movement %}
+            <li class="list-group-item border-success d-flex justify-content-between">
+        {% else %}
+            <li class="list-group-item border-danger d-flex justify-content-between">
+        {% endif %}
+            <div class="w-75">
+                <div class="d-flex justify-content-between">
+                    <p>{{movement.name}}</p>
+                    <p>{{movement.date|date:"d/m/Y"}}</p>
+                </div>
+                <p>${{movement.amount}}</p>
+            </div>
+            <div class="d-flex flex-column">
+                <a class="btn btn-secondary fs-5 p-1 px-2" href="{% url 'edit' id=movement.id %}"><ion-icon name="pencil-outline"></ion-icon></a>
+                <a class="btn btn-danger mt-1 fs-5 p-1 px-2" href="{% url 'delete' id=movement.id %}"><ion-icon name="trash-outline"></ion-icon></a>
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+
+<nav aria-label="Page navigation example">
+    {% if pagina_productos.paginator.num_pages > 1 %}
+        <ul class="pagination">
+            {% if pagina_resultados.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'list_movements' page=movements.previous_page_number %}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            <!-- Enlace a la primera página -->
+            {% if pagina_productos.number > 3 %}
+                <li class="page-item"><a class="page-link" href="{% url 'list_movements' page=1 %}">1</a></li>
+                {% if pagina_productos.number > 4 %}
+                    <li class="page-item">...</li>
+                {% endif %}
+            {% endif %}
+            
+            <!-- Números cercanos a la página actual -->
+            {% for i in pagina_productos.paginator.page_range %}
+                {% if i >= pagina_productos.number|add:-2 and i <= pagina_productos.number|add:2 %}
+                    {% if i == pagina_productos.number %}
+                        <li class="page-item"><strong>{{ i }}</strong></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link"  href="{% url 'list_movements' page=i %}">{{ i }}</a></li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            <!-- Enlace a la última página -->
+            {% if pagina_productos.number < pagina_productos.paginator.num_pages|add:-2 %}
+                {% if pagina_productos.number < pagina_productos.paginator.num_pages|add:-3 %}
+                    <li class="page-item">...</li>
+                {% endif %}
+                <li class="page-item"><a class="page-link" href="{% url 'list_movements' page=pagina_productos.paginator.num_pages %}">{{ pagina_productos.paginator.num_pages }}</a></li>
+            {% endif %}
+
+            {% if pagina_resultados.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'list_movements' page=movements.next_page_number %}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    {% endif %}
+</nav>
+
+{% endblock content %}

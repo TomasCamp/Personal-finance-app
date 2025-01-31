@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 from .forms import MovementForm
 from .models import Movements
 
 
-def indexView(request):
+PAGES = 15
+
+
+def index_view(request):
     """Muestra la pagina principal."""
     inputs = Movements.objects.filter(type_movement=True).order_by("date")
     outputs = Movements.objects.filter(type_movement=False).order_by("date")
@@ -21,7 +25,7 @@ def indexView(request):
     )
 
 
-def createMovement(request):
+def create_movement(request):
     """Muestra el formulario de movimientos y guarda los nuevos movimientos"""
     if request.method == "POST":
         form = MovementForm(request.POST)
@@ -42,7 +46,7 @@ def createMovement(request):
     return render(request, "create.html", {"form":form})
 
 
-def deleteMovement(request, id):
+def delete_movement(request, id):
     """
         Recibe un id, si es valido elimina el objeto correspondiente,
         si no carga el template.
@@ -57,7 +61,7 @@ def deleteMovement(request, id):
     return render(request, "delete.html", {"movement":movement})
 
 
-def editMovement(request, id):
+def edit_movement(request, id):
     """Muestra el formulario de movimientos y guarda los nuevos movimientos"""
     movement = Movements.objects.get(id=id)
     if movement is None:
@@ -79,3 +83,12 @@ def editMovement(request, id):
         form = MovementForm(initial=movement.get_data())
     
     return render(request, "edit.html", {"form":form})
+
+
+def list_movements(request, page=1):
+    movements = Movements.objects.all()
+
+    paginator = Paginator(movements, PAGES)
+    movements = paginator.get_page(page)
+
+    return render(request, "listMovements.html", {"movements":movements})
