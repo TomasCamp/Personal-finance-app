@@ -5,6 +5,48 @@
     <a class="btn btn-secondary me-2" href="{% url 'index' %}">Volver</a>
     <h1>Movimientos</h1>
 </div>
+
+<h2>Filtros</h2>
+<form method="GET" class="d-flex flex-wrap my-3 justify-content-evenly align-items-center">
+    {% csrf_token %}
+
+    <div class="mb-3 w-25 mx-1">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+    </div>
+
+    <div class="mb-3 w-25 mx-1">
+        {{ form.min_date.label_tag }}
+        {{ form.min_date }}
+    </div>
+
+    <div class="mb-3 w-25 mx-1">
+        {{ form.max_date.label_tag }}
+        {{ form.max_date }}
+    </div>
+
+    <div class="mb-3 w-25 mx-1">
+        {{ form.type_movement.label_tag }}
+        {{ form.type_movement }}
+    </div>
+    
+    <div class="mb-3 w-25 mx-1">
+        {{ form.amount.label_tag }}
+        {{ form.amount }}
+    </div>
+
+    <div class="mb-3 w-25 mx-1">
+        {{ form.order.label_tag }}
+        {{ form.order }}
+    </div>
+
+    <div class="w-100 d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary h-50 me-3">Filtrar</button>
+        <a class="btn btn-secondary h-50" href="{% url 'list_movements_default' %}">Limpiar Filtros</a>
+    </div>
+
+</form>
+
 <ul class="list-group border-3 mt-2">
     {% for movement in movements %}
         {% if movement.type_movement %}

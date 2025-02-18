@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-from .forms import MovementForm
+from .forms import MovementForm, MovementFilter
 from .models import Movements
 
 
@@ -86,9 +86,46 @@ def edit_movement(request, id):
 
 
 def list_movements(request, page=1):
-    movements = Movements.objects.all()
+    form = MovementFilter(request.GET)
+    movements = Movements.objects
+    if form.is_valid():
+        print("Entró")
+        name = form.cleaned_data.get('name')
+        if name:
+            movements = movements.filter(name__icontains=name)
 
-    paginator = Paginator(movements, PAGES)
+        min_date = form.cleaned_data.get('min_date')
+        if min_date:
+            movements = movements.filter(date__gte=min_date)
+        max_date = form.cleaned_data.get('max_date')
+        if max_date:
+            movements = movements.filter(date__lte=max_date)
+        
+        type_movement = form.cleaned_data.get('type_movement')
+        if type_movement == "2":
+            movements = movements.filter(type_movement=True)
+        elif type_movement == "3":
+            movements = movements.filter(type_movement=False)
+
+        amount = form.cleaned_data.get('amount')
+        if amount:
+            movements = movements.filter(amount=amount)
+        
+        order = form.cleaned_data.get('order') or "1"
+        if order == "1":
+            movements = movements.order_by("-date")
+        elif order == "2":
+            movements = movements.order_by("date")
+        elif order == "3":
+            movements = movements.order_by("name")
+        elif order == "4":
+            movements = movements.order_by("-name")
+
+    paginator = Paginator(movements.all(), PAGES)
     movements = paginator.get_page(page)
 
-    return render(request, "listMovements.html", {"movements":movements})
+    return render(
+        request, 
+        "listMovements.html", 
+        {"movements":movements, "form":form}
+    )
