@@ -1,18 +1,32 @@
 from django import forms
+from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
+from datetime import date
 
 class MovementForm(forms.Form):
     name = forms.CharField(
         label="*Nombre",
         max_length=75, 
         required=True,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        validators=[
+            RegexValidator(
+                regex=r"^[A-Za-z\s]+$",
+                message="El nombre solo puede contener letras y espacios."
+            )
+        ]
     )
     date = forms.DateField(
         label="*Fecha", 
         required=True,
         widget=forms.DateTimeInput(
             attrs={'type':'date', 'class': 'form-control'}
-        )
+        ),
+        validators=[
+            MaxValueValidator(
+                limit_value=date.today(),
+                message="La fecha no puede ser posterior a hoy."
+            )
+        ]
     )
     type_movement = forms.ChoiceField(
         label="*Tipo",
@@ -23,7 +37,13 @@ class MovementForm(forms.Form):
     amount = forms.FloatField(
         label="*Monto",
         required=True,
-        widget=forms.NumberInput(attrs={'class': 'form-control'})
+        widget=forms.NumberInput(attrs={'class': 'form-control'}),
+        validators=[
+            MinValueValidator(
+                limit_value=0.0,
+                message=("Se debe ingresar el número en valores positivos.")
+            )
+        ]
     )
 
 

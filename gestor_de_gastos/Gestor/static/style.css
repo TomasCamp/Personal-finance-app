@@ -18,12 +18,14 @@ body {
 .view {
     display: flex;
     width: 90%;
-    justify-content: space-between;
+    align-items: center;
     margin-top: 20px;
+    flex-direction: column;
 }
 .input, .output {
-    width: 40%;
+    width: 80%;
     height: min-content;
+    margin-bottom: 15px;
 }
 .cell {
     display: flex;
@@ -68,4 +70,35 @@ body {
 }
 .output .cell:last-of-type {
     border-radius: 0 0 10px 10px;
+}
+
+.list-errors {
+    list-style: none;
+}
+
+.flex-md-row div {
+    width: 100%;
+}
+
+.list-movements {
+    width: 75%;
+}
+
+@media screen and (min-width: 768px) {
+    .flex-md-row div{
+        width: 25%;
+    }
+
+    .list-movements {
+        width: 50%;
+    }
+
+    .view {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .input, .output {
+        width: 40%;
+    }
 }

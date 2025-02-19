@@ -7,35 +7,38 @@
 </div>
 
 <h2>Filtros</h2>
-<form method="GET" class="d-flex flex-wrap my-3 justify-content-evenly align-items-center">
+<form 
+    method="GET" 
+    class="d-flex flex-wrap my-3 justify-content-evenly align-items-center flex-column flex-md-row"
+>
     {% csrf_token %}
 
-    <div class="mb-3 w-25 mx-1">
+    <div class="mb-3 mx-1">
         {{ form.name.label_tag }}
         {{ form.name }}
     </div>
 
-    <div class="mb-3 w-25 mx-1">
+    <div class="mb-3 mx-1">
         {{ form.min_date.label_tag }}
         {{ form.min_date }}
     </div>
 
-    <div class="mb-3 w-25 mx-1">
+    <div class="mb-3 mx-1">
         {{ form.max_date.label_tag }}
         {{ form.max_date }}
     </div>
 
-    <div class="mb-3 w-25 mx-1">
+    <div class="mb-3 mx-1">
         {{ form.type_movement.label_tag }}
         {{ form.type_movement }}
     </div>
     
-    <div class="mb-3 w-25 mx-1">
+    <div class="mb-3 mx-1">
         {{ form.amount.label_tag }}
         {{ form.amount }}
     </div>
 
-    <div class="mb-3 w-25 mx-1">
+    <div class="mb-3 mx-1">
         {{ form.order.label_tag }}
         {{ form.order }}
     </div>
@@ -47,7 +50,7 @@
 
 </form>
 
-<ul class="list-group border-3 mt-2">
+<ul class="list-group border-3 mt-2 list-movements">
     {% for movement in movements %}
         {% if movement.type_movement %}
             <li class="list-group-item border-success d-flex justify-content-between">
