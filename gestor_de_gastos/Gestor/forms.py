@@ -1,6 +1,7 @@
 from django import forms
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from datetime import date
+from .models import User
 
 class MovementForm(forms.Form):
     name = forms.CharField(
@@ -86,3 +87,23 @@ class MovementFilter(forms.Form):
         choices=[("1", "Reciente"), ("2", "Antiguo"), ("3", "A - Z"), ("4", "Z - A")],
         widget=forms.Select(attrs={'class': 'form-select'})
     )
+
+
+class SignUpForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ["email", "password"]
+
+    def save(self, commit=True):
+        usuario = super().save(commit=False)
+        usuario.set_password(self.cleaned_data["password"])
+        if commit:
+            usuario.save()
+        return usuario
+    
+
+class LoginForm(forms.Form):
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput)

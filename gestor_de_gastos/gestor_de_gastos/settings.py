@@ -65,6 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "Gestor.context_processors.global_context"
             ],
         },
     },
@@ -127,3 +128,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
+AUTHENTICATION_BACKENDS = [
+    "Gestor.backends.CustomUserBackend",
+    "django.contrib.auth.backends.ModelBackend", 
+]

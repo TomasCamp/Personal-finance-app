@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
-from .forms import MovementForm, MovementFilter
-from .models import Movements
+from django.contrib.auth import authenticate, login, logout
+from .forms import MovementForm, MovementFilter, SignUpForm, LoginForm
+from .models import Movements, User
+from .utils import login_check
 
 
 PAGES = 15
 
 
+@login_check
 def index_view(request):
     """Muestra la pagina principal."""
     inputs = Movements.objects.filter(type_movement=True).order_by("date")
@@ -25,6 +28,7 @@ def index_view(request):
     )
 
 
+@login_check
 def create_movement(request):
     """Muestra el formulario de movimientos y guarda los nuevos movimientos"""
     if request.method == "POST":
@@ -46,6 +50,7 @@ def create_movement(request):
     return render(request, "create.html", {"form":form})
 
 
+@login_check
 def delete_movement(request, id):
     """
         Recibe un id, si es valido elimina el objeto correspondiente,
@@ -61,6 +66,7 @@ def delete_movement(request, id):
     return render(request, "delete.html", {"movement":movement})
 
 
+@login_check
 def edit_movement(request, id):
     """Muestra el formulario de movimientos y guarda los nuevos movimientos"""
     movement = Movements.objects.get(id=id)
@@ -85,7 +91,9 @@ def edit_movement(request, id):
     return render(request, "edit.html", {"form":form})
 
 
+@login_check
 def list_movements(request, page=1):
+    """Genera un listado de movimientos y los filtra."""
     form = MovementFilter(request.GET)
     movements = Movements.objects
     if form.is_valid():
@@ -129,3 +137,42 @@ def list_movements(request, page=1):
         "listMovements.html", 
         {"movements":movements, "form":form}
     )
+
+
+def sign_up(request):
+    """Muestra la pagina para crear usuarios y los crea."""
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect("login")
+    else:
+        form = SignUpForm()
+    
+    return render(request, "sign_up.html", {"form":form})
+
+
+def login_view(request):
+    """Permite iniciar sesión."""
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            password = form.cleaned_data["password"]
+            user = authenticate(request, email=email, password=password)
+            if user:
+                login(request, user)
+                return redirect("index")
+            else:
+                form.add_error(None, "Credenciales incorrectas")
+    else:
+        form = LoginForm()
+    
+    return render(request, "login.html", {"form":form})
+
+
+@login_check
+def logout_view(request):
+    logout(request)
+    return redirect("login")
