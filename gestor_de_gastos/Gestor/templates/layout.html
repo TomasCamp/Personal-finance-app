@@ -17,18 +17,19 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
                     {% if is_authenticated %}
-                        <a class="nav-link" href="{% url 'index' %}">Home</a>
-                        <a class="nav-link" href="{% url 'list_movements_default' %}">Movements</a>
-                        <a class="nav-link" href="{% url 'create' %}">New Movement</a>
-                        <a class="btn btn-danger" href="{% url 'logout' %}">Log Out</a>
+                        <div class="navbar-nav">
+                            <a class="nav-link" href="{% url 'index' %}">Home</a>
+                            <a class="nav-link" href="{% url 'list_movements_default' %}">Movements</a>
+                            <a class="nav-link" href="{% url 'create' %}">New Movement</a>
+                            <a class="btn btn-danger" href="{% url 'logout' %}">Log Out</a>
+                        </div>
                     {% else %}
-                        <a class="btn btn-secondary" href="{% url 'sign_up' %}">Sign Up</a>
-                        <a class="btn btn-success" href="{% url 'login' %}">Login</a>
+                        <div class="navbar-nav">
+                            <a class="btn btn-secondary" href="{% url 'sign_up' %}">Sign Up</a>
+                            <a class="btn btn-success" href="{% url 'login' %}">Login</a>
+                        </div>
                     {% endif %}
-                    
-                </div>
             </div>
         </div>
     </nav>

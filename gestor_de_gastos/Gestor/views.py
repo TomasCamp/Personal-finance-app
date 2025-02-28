@@ -12,8 +12,10 @@ PAGES = 15
 @login_check
 def index_view(request):
     """Muestra la pagina principal."""
-    inputs = Movements.objects.filter(type_movement=True).order_by("date")
-    outputs = Movements.objects.filter(type_movement=False).order_by("date")
+    movements = request.user.movements
+    
+    inputs = movements.filter(type_movement=True).order_by("date")
+    outputs = movements.filter(type_movement=False).order_by("date")
     total = 0
     for obj in inputs:
         total += obj.amount
@@ -35,6 +37,7 @@ def create_movement(request):
         form = MovementForm(request.POST)
         if form.is_valid():
             movement = Movements(
+                user=request.user,
                 name=request.POST.get('name'),
                 date=request.POST.get('date'),
                 amount=request.POST.get('amount'),
@@ -95,7 +98,7 @@ def edit_movement(request, id):
 def list_movements(request, page=1):
     """Genera un listado de movimientos y los filtra."""
     form = MovementFilter(request.GET)
-    movements = Movements.objects
+    movements = request.user.movements
     if form.is_valid():
         print("Entró")
         name = form.cleaned_data.get('name')
