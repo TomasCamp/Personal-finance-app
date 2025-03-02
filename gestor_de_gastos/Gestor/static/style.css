@@ -84,6 +84,10 @@ body {
     width: 75%;
 }
 
+.navbar-collapse {
+    flex-grow: 0 !important;
+}
+
 @media screen and (min-width: 768px) {
     .flex-md-row div{
         width: 25%;

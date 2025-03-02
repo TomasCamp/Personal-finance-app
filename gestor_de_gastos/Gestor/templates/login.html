@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<form method="POST">
+<form method="POST" class="d-flex flex-column">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Ingresar</button>
