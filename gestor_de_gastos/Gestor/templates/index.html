@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<h1>$ {{total}}</h1>
-<h2>USD 100</h2>
+<h1>Total</h1>
+<h2>$ {{total}}</h2>
 
 <a class="btn btn-secondary" href="{% url 'create' %}">Agregar</a>
 
@@ -12,6 +12,7 @@
         <ul class="list-group border-3">
             {% for input in inputs %}
                 <li class="list-group-item border-success d-flex justify-content-between">
+                    <div class="d-flex align-items-center"><ion-icon class="text-success fs-5" name="{{input.category.class_name}}"></div>
                     <div class="w-75">
                         <div class="d-flex justify-content-between">
                             <p>{{input.name}}</p>
@@ -32,6 +33,7 @@
         <ul class="list-group border-3">
             {% for output in outputs %}
                 <li class="list-group-item border-danger d-flex justify-content-between">
+                    <div class="d-flex align-items-center"><ion-icon class="text-danger fs-5" name="{{output.category.class_name}}"></div>
                     <div class="w-75">
                         <div class="d-flex justify-content-between">
                             <p>{{output.name}}</p>

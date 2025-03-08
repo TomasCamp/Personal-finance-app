@@ -53,10 +53,13 @@
 <ul class="list-group border-3 mt-2 list-movements">
     {% for movement in movements %}
         {% if movement.type_movement %}
-            <li class="list-group-item border-success d-flex justify-content-between">
+            <li class="list-group-item border border-success d-flex justify-content-between mb-1 rounded">
+                <div class="d-flex align-items-center"><ion-icon class="text-success fs-5" name="{{movement.category.class_name}}"></div>
         {% else %}
-            <li class="list-group-item border-danger d-flex justify-content-between">
+            <li class="list-group-item border border-danger d-flex justify-content-between mb-1 rounded">
+                <div class="d-flex align-items-center"><ion-icon class="text-danger fs-5" name="{{movement.category.class_name}}"></div>
         {% endif %}
+        
             <div class="w-75">
                 <div class="d-flex justify-content-between">
                     <p>{{movement.name}}</p>

@@ -34,6 +34,16 @@
         {{ form.type_movement }}
     </div>
 
+    <div class="mb-3 aux">
+        {{ form.category_input.label_tag }}
+        {{ form.category_input }}
+    </div>
+
+    <div class="mb-3 aux">
+        {{ form.category_output.label_tag }}
+        {{ form.category_output }}
+    </div>
+
     <div class="mb-3">
         {{ form.amount.label_tag }}
         {{ form.amount }}
@@ -43,3 +53,24 @@
 </form>
 
 {% endblock content %}
+
+{% block script %}
+
+<script>
+    var type = document.getElementById("type");
+    var divs = document.getElementsByClassName("aux");
+    function handler() { 
+        if (type.value == "True") {
+            divs[0].classList.remove("hidden")
+            divs[1].classList.add("hidden")
+        } else {
+            divs[1].classList.remove("hidden")
+            divs[0].classList.add("hidden")
+        }
+    }
+    handler();
+    type.addEventListener("change", handler);
+
+</script>
+
+{% endblock script %}

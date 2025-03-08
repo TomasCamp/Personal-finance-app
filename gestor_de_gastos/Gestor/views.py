@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login, logout
 from .forms import MovementForm, MovementFilter, SignUpForm, LoginForm
-from .models import Movements, User
+from .models import Movements, Categories
+from django.contrib.auth.models import User
 from .utils import login_check
 
 
@@ -36,12 +37,19 @@ def create_movement(request):
     if request.method == "POST":
         form = MovementForm(request.POST)
         if form.is_valid():
+            id_category = 0
+            if form.cleaned_data['type_movement']:
+                id_category = form.cleaned_data["category_input"]
+            else:
+                id_category = form.cleaned_data["category_output"]
             movement = Movements(
+                
                 user=request.user,
-                name=request.POST.get('name'),
-                date=request.POST.get('date'),
-                amount=request.POST.get('amount'),
-                type_movement=request.POST.get('type_movement')
+                name=form.cleaned_data['name'],
+                date=form.cleaned_data['date'],
+                amount=form.cleaned_data['amount'],
+                type_movement=form.cleaned_data['type_movement'],
+                category=Categories.objects.get(id=id_category)
             )
             movement.save()
 
@@ -79,17 +87,29 @@ def edit_movement(request, id):
     if request.method == "POST":
         form = MovementForm(request.POST)
         if form.is_valid():
+            id_category = 0
+            if form.cleaned_data['type_movement'] == "True":
+                id_category = form.cleaned_data["category_input"]
+            else:
+                id_category = form.cleaned_data["category_output"]
             movement.name=form.cleaned_data['name']
             movement.date=form.cleaned_data['date']
             movement.amount=form.cleaned_data['amount']
             movement.type_movement=form.cleaned_data['type_movement']
-
+            movement.category=Categories.objects.get(id=id_category)
             movement.save()
 
             return redirect("index")
             
     else:
-        form = MovementForm(initial=movement.get_data())
+        if movement.type_movement:
+            form = MovementForm(initial={
+                **movement.get_data(), "category_input": movement.category.id
+            })
+        else:
+            form = MovementForm(initial={
+                **movement.get_data(), "category_output": movement.category.id
+            })
     
     return render(request, "edit.html", {"form":form})
 
@@ -148,7 +168,12 @@ def sign_up(request):
         form = SignUpForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            user = User.objects.create_user(
+                username=form.cleaned_data["email"],
+                email=form.cleaned_data["email"],
+                password=form.cleaned_data["password"]
+            )
+            user.save()
             return redirect("login")
     else:
         form = SignUpForm()
@@ -163,7 +188,7 @@ def login_view(request):
         if form.is_valid():
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password"]
-            user = authenticate(request, email=email, password=password)
+            user = authenticate(request, username=email, password=password)
             if user:
                 login(request, user)
                 return redirect("index")

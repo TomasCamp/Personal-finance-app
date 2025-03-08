@@ -2,6 +2,7 @@ from django import forms
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from datetime import date
 from .models import User
+from .utils import get_categories
 
 class MovementForm(forms.Form):
     name = forms.CharField(
@@ -33,7 +34,7 @@ class MovementForm(forms.Form):
         label="*Tipo",
         required=True,
         choices=[(True, "Ingreso"), (False, "Egreso")],
-        widget=forms.Select(attrs={'class': 'form-select'})
+        widget=forms.Select(attrs={'id':'type','class':'form-select'})
     )
     amount = forms.FloatField(
         label="*Monto",
@@ -45,6 +46,20 @@ class MovementForm(forms.Form):
                 message=("Se debe ingresar el número en valores positivos.")
             )
         ]
+    )
+    category_input = forms.TypedChoiceField(
+        label="*Categoría",
+        required=True,
+        choices=get_categories(True),
+        widget=forms.Select(attrs={'class':'form-select'}),
+        coerce=int
+    )
+    category_output = forms.TypedChoiceField(
+        label="*Categoría",
+        required=True,
+        choices=get_categories(False),
+        widget=forms.Select(attrs={'class':'form-select'}),
+        coerce=int
     )
 
 
@@ -95,13 +110,6 @@ class SignUpForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ["email", "password"]
-
-    def save(self, commit=True):
-        usuario = super().save(commit=False)
-        usuario.set_password(self.cleaned_data["password"])
-        if commit:
-            usuario.save()
-        return usuario
     
 
 class LoginForm(forms.Form):
