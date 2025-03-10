@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login, logout
 from .forms import MovementForm, MovementFilter, SignUpForm, LoginForm
@@ -67,9 +67,8 @@ def delete_movement(request, id):
         Recibe un id, si es valido elimina el objeto correspondiente,
         si no carga el template.
     """
-    movement = Movements.objects.get(id=id)
-    print(movement.type_movement)
-    print(type(movement.type_movement))
+    movement = get_object_or_404(Movements, pk=id, user=request.user)
+    "Comprobar"
     if request.method == 'POST':
         movement.delete()
         return redirect("index")
@@ -80,7 +79,8 @@ def delete_movement(request, id):
 @login_check
 def edit_movement(request, id):
     """Muestra el formulario de movimientos y guarda los nuevos movimientos"""
-    movement = Movements.objects.get(id=id)
+    movement = get_object_or_404(Movements, pk=id, user=request.user)
+    "Comprobar"
     if movement is None:
         return redirect("index")
     
@@ -168,13 +168,17 @@ def sign_up(request):
         form = SignUpForm(request.POST)
 
         if form.is_valid():
-            user = User.objects.create_user(
-                username=form.cleaned_data["email"],
-                email=form.cleaned_data["email"],
-                password=form.cleaned_data["password"]
-            )
-            user.save()
-            return redirect("login")
+            user = User.objects.filter(username=form.cleaned_data["email"])
+            if not user:
+                user = User.objects.create_user(
+                    username=form.cleaned_data["email"],
+                    email=form.cleaned_data["email"],
+                    password=form.cleaned_data["password"]
+                )
+                user.save()
+                return redirect("login")
+            form.add_error("enail", "El email ya se encuentra registrado.")
+            
     else:
         form = SignUpForm()
     
