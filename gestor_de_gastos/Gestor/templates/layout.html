@@ -19,15 +19,15 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     {% if is_authenticated %}
                         <div class="navbar-nav d-flex justify-content-between">
-                            <a class="nav-link m-1" href="{% url 'index' %}">Home</a>
-                            <a class="nav-link m-1" href="{% url 'list_movements_default' %}">Movements</a>
-                            <a class="nav-link m-1" href="{% url 'create' %}">New Movement</a>
-                            <a class="btn btn-danger m-1" href="{% url 'logout' %}">Log Out</a>
+                            <a class="nav-link m-1" href="{% url 'index' %}">Inicio</a>
+                            <a class="nav-link m-1" href="{% url 'list_movements_default' %}">Movimientos</a>
+                            <a class="nav-link m-1" href="{% url 'create' %}">Nuevo Movimiento</a>
+                            <a class="btn btn-danger m-1" href="{% url 'logout' %}">Cerrar Sesión</a>
                         </div>
                     {% else %}
                         <div class="navbar-nav">
-                            <a class="btn btn-secondary m-1" href="{% url 'sign_up' %}">Sign Up</a>
-                            <a class="btn btn-success m-1" href="{% url 'login' %}">Login</a>
+                            <a class="btn btn-secondary m-1" href="{% url 'sign_up' %}">Registrarse</a>
+                            <a class="btn btn-success m-1" href="{% url 'login' %}">Iniciar Sesión</a>
                         </div>
                     {% endif %}
             </div>

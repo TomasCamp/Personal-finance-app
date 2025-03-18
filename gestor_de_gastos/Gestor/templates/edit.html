@@ -6,8 +6,9 @@
     <h1>Editar movimiento</h1>
 </div>
 
+{% if form.errors %}
 <div>
-    <ul>
+    <ul class="list-errors">
         {% for field, errors in form.errors.items %}
             {% for error in errors %}
                 <li class="alert alert-danger">{{ error }}</li>
@@ -15,6 +16,7 @@
         {% endfor %}
     </ul>
 </div>
+{% endif %}
 
 <form method="post" action="" class="w-50 d-flex flex-column">
     {% csrf_token %}

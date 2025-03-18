@@ -105,7 +105,19 @@ class MovementFilter(forms.Form):
 
 
 class SignUpForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.EmailField(
+        label="*Email",
+        widget=forms.EmailInput(attrs={'class': 'form-control'})
+    )
+    password = forms.CharField(
+        label="*Contraseña",
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
+    password2 = forms.CharField(
+        label="Repetir Contraseña",
+        required=True,
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
 
     class Meta:
         model = User
@@ -113,5 +125,11 @@ class SignUpForm(forms.ModelForm):
     
 
 class LoginForm(forms.Form):
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    email = forms.EmailField(
+        label="Email",
+        widget=forms.EmailInput(attrs={'class': 'form-control'})
+    )
+    password = forms.CharField(
+        label="Contraseña",
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )

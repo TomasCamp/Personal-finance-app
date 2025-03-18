@@ -177,7 +177,7 @@ def sign_up(request):
                 )
                 user.save()
                 return redirect("login")
-            form.add_error("enail", "El email ya se encuentra registrado.")
+            form.add_error("email", "El email ya se encuentra registrado.")
             
     else:
         form = SignUpForm()
