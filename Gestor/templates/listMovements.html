@@ -54,10 +54,14 @@
     {% for movement in movements %}
         {% if movement.type_movement %}
             <li class="list-group-item border border-success d-flex justify-content-between mb-1 rounded">
-                <div class="d-flex align-items-center"><ion-icon class="text-success fs-5" name="{{movement.category.class_name}}"></div>
+                <div class="d-flex align-items-center">
+                    <span class="material-symbols-outlined text-success fs-5">{{movement.category.class_name}}</span>
+                </div>
         {% else %}
             <li class="list-group-item border border-danger d-flex justify-content-between mb-1 rounded">
-                <div class="d-flex align-items-center"><ion-icon class="text-danger fs-5" name="{{movement.category.class_name}}"></div>
+                <div class="d-flex align-items-center">
+                    <span class="material-symbols-outlined text-danger fs-5">{{movement.category.class_name}}</span>
+                </div>
         {% endif %}
         
             <div class="w-75">
@@ -68,8 +72,8 @@
                 <p>${{movement.amount}}</p>
             </div>
             <div class="d-flex flex-column">
-                <a class="btn btn-secondary fs-5 p-1 px-2" href="{% url 'edit' id=movement.id %}"><ion-icon name="pencil-outline"></ion-icon></a>
-                <a class="btn btn-danger mt-1 fs-5 p-1 px-2" href="{% url 'delete' id=movement.id %}"><ion-icon name="trash-outline"></ion-icon></a>
+                <a href="{% url 'edit' id=movement.id %}"><span class="btn btn-secondary fs-5 p-2 material-symbols-outlined">edit</span></a>
+                <a class="mt-1" href="{% url 'delete' id=movement.id %}"><span class="btn btn-danger fs-5 p-2 material-symbols-outlined">delete</span></a>
             </div>
         </li>
     {% endfor %}
