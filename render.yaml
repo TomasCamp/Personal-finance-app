@@ -1,0 +1,22 @@
+databases:
+  - name: gestor_de_gastosdb
+    plan: free
+    databaseName: gestor_de_gastos
+    user: gestor_de_gastos
+
+services:
+  - type: web
+    plan: free
+    name: gestor_de_gastos
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "python -m gunicorn gestor_de_gastos.asgi:application -k uvicorn.workers.UvicornWorker"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: gestor_de_gastosdb
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
