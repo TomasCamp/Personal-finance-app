@@ -90,7 +90,7 @@ WSGI_APPLICATION = 'gestor_de_gastos.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://postgres:postgres@localhost:5432/mysite', 
+        default='postgresql://postgres:postgres@localhost:5432/gestor_de_gastos', 
         conn_max_age=600    
     )
 }
