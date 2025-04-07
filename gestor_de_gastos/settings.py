@@ -82,19 +82,19 @@ WSGI_APPLICATION = 'gestor_de_gastos.wsgi.application'
 
 # Local Databases
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DB'), 
-        conn_max_age=600    
-    )
-}
 
-if DEBUG:
-    DATABASES = {
+DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
+    }
+if not DEBUG:
+    DATABASES = {
+    'default': dj_database_url.config(
+        default=os.environ.get('DB'), 
+        conn_max_age=600    
+    )
     }
 
 
