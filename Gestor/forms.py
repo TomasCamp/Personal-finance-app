@@ -2,7 +2,6 @@ from django import forms
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from datetime import date
 from .models import User
-from .utils import get_categories
 
 class MovementForm(forms.Form):
     name = forms.CharField(
@@ -50,17 +49,23 @@ class MovementForm(forms.Form):
     category_input = forms.TypedChoiceField(
         label="*Categoría",
         required=True,
-        choices=get_categories(True),
+        choices=[],
         widget=forms.Select(attrs={'class':'form-select'}),
         coerce=int
     )
     category_output = forms.TypedChoiceField(
         label="*Categoría",
         required=True,
-        choices=get_categories(False),
+        choices=[],
         widget=forms.Select(attrs={'class':'form-select'}),
         coerce=int
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        from .utils import get_categories  # <-- lo traés adentro para evitar errores al migrar
+        self.fields["category_input"].choices = get_categories(True)
+        self.fields["category_output"].choices = get_categories(False)
 
 
 class MovementFilter(forms.Form):
