@@ -1,6 +1,6 @@
 from functools import wraps
 from django.shortcuts import redirect
-from .models import Categories
+
 
 def is_authenticated(request):
     """Devuelve si el usuario está autenticado"""
@@ -16,6 +16,7 @@ def login_check(view_func):
     return wrapper
 
 def get_categories(movement):
+    from .models import Categories
     categories = Categories.objects.filter(type_movement=movement).all()
     values = []
     for category in categories:
